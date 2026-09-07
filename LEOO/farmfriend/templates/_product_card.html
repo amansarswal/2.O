@@ -1,0 +1,8 @@
+<article class="product-card">
+  <a class="product-image" href="{{ url_for('product_detail', product_id=product.id) }}"><img src="{{ product.image }}" alt="{{ product.name }}" loading="lazy"></a>
+  <div class="product-card-body"><div class="card-topline"><span class="pill">{{ product.category or 'Produce' }}</span><span class="rating">★ {{ '%.1f'|format(product.rating) }} <small>({{ product.rating_count }})</small></span></div>
+    <h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3><p class="muted">{{ product.farmer_name }} · {{ product.location }}</p>
+    <div class="card-bottom"><strong class="price">₹{{ '%.0f'|format(product.price) }}<small>/{{ product.unit }}</small></strong><span class="stock">{{ product.stock|round|int }} {{ product.unit }} left</span></div>
+    <a class="button button-wide" href="{{ url_for('product_detail', product_id=product.id) }}">View product</a>
+  </div>
+</article>

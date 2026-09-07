@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}{{ farmer.name }} · FarmConnect{% endblock %}
+{% block content %}
+<section class="profile-hero"><div class="shell profile-header"><div class="avatar avatar-large">{{ farmer.name[0] }}</div><div><p class="eyebrow">Farmer profile</p><h1>{{ farmer.name }}</h1><p>{{ farmer.farm }} · {{ farmer.location }}</p><div class="rating large">★ {{ '%.1f'|format(rating.average) }} <small>{{ rating.count }} ratings</small></div></div></div></section>
+<section class="section shell profile-content"><div><p class="eyebrow">About the farm</p><h2>{{ farmer.farm }}</h2><p>{{ farmer.bio or 'This farmer is growing fresh produce for the local community.' }}</p></div><div><p class="eyebrow">Customer reviews</p>{% for review in rating.reviews %}<article class="review"><div class="rating">{{ '★' * review.stars }} <small>{{ review.comment or 'A happy customer.' }}</small></div></article>{% else %}<p class="muted">No reviews yet. Be the first customer to share your experience.</p>{% endfor %}</div></section>
+{% endblock %}

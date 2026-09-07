@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Browse products · FarmConnect{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="shell"><p class="eyebrow">The local harvest</p><h1>Find something fresh.</h1><p>Browse produce from farmers who care about what they grow.</p><form id="search-form" class="search-box"><span>⌕</span><input id="search-input" type="search" placeholder="Search tomatoes, farms, locations…" autocomplete="off"></form></div></section>
+<section class="section shell"><div class="section-heading"><h2>Available products</h2><span id="result-count" class="muted"></span></div><div id="products-grid" class="product-grid"><div class="loading">Loading the harvest…</div></div></section>
+{% endblock %}
+{% block scripts %}<script>
+const grid=document.querySelector('#products-grid'), input=document.querySelector('#search-input'), count=document.querySelector('#result-count');
+async function loadProducts(q=''){ const response=await fetch('/api/products?q='+encodeURIComponent(q)); const data=await response.json(); count.textContent=data.products.length+' products'; grid.innerHTML=data.products.length ? data.products.map(productCard).join('') : '<div class="empty-state">No products match that search.</div>'; }
+function productCard(p){return `<article class="product-card"><a class="product-image" href="/product/${p.id}"><img src="${p.image}" alt="${escapeHtml(p.name)}" loading="lazy"></a><div class="product-card-body"><div class="card-topline"><span class="pill">${escapeHtml(p.category||'Produce')}</span><span class="rating">★ ${Number(p.rating).toFixed(1)} <small>(${p.rating_count})</small></span></div><h3><a href="/product/${p.id}">${escapeHtml(p.name)}</a></h3><p class="muted">${escapeHtml(p.farmer_name)} · ${escapeHtml(p.location)}</p><div class="card-bottom"><strong class="price">₹${Number(p.price).toFixed(0)}<small>/${escapeHtml(p.unit)}</small></strong><span class="stock">${Math.round(p.stock)} ${escapeHtml(p.unit)} left</span></div><a class="button button-wide" href="/product/${p.id}">View product</a></div></article>`}
+function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+input.addEventListener('input',()=>loadProducts(input.value)); loadProducts();
+</script>{% endblock %}

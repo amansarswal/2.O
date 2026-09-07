@@ -1,0 +1,2 @@
+async function updateNavigation(){const response=await fetch('/api/me');if(!response.ok)return;const data=await response.json();if(!data.user)return;document.querySelectorAll('.nav-actions').forEach(nav=>{nav.innerHTML=`<span class="muted">Hi, ${data.user.name}</span><button class="button button-ghost" id="logout-button">Log out</button>`;});document.querySelector('#logout-button')?.addEventListener('click',async()=>{await fetch('/api/logout',{method:'POST'});location.href='/';});}
+updateNavigation();

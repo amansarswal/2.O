@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}FarmConnect · From local farms to your table{% endblock %}
+{% block content %}
+<section class="hero"><div class="shell hero-grid"><div>
+  <p class="eyebrow">A better way to buy fresh</p>
+  <h1>Good food starts with a <em>good connection.</em></h1>
+  <p class="hero-copy">Meet local farmers, discover honest prices, and bring the best of the harvest home.</p>
+  <div class="hero-actions"><a class="button" href="{{ url_for('products_page') }}">Browse products <span>→</span></a><a class="text-link" href="{{ url_for('register', role='farmer') }}">Sell your harvest →</a></div>
+</div><div class="hero-art"><div class="sun"></div><div class="hero-card"><span class="leaf">✦</span><strong>Fresh this week</strong><small>Picked with care, delivered with trust.</small></div></div></div></section>
+<section class="section shell"><div class="section-heading"><div><p class="eyebrow">From farms near you</p><h2>Popular picks</h2></div><a class="text-link" href="{{ url_for('products_page') }}">View all products →</a></div>
+  <div class="product-grid">{% for product in products[:6] %}{% include "_product_card.html" %}{% else %}<div class="empty-state">No products are available yet. Check back soon.</div>{% endfor %}</div>
+</section>
+<section class="trust-band"><div class="shell trust-grid"><div><span class="trust-icon">◎</span><strong>Direct from farmers</strong><p>Know who grows your food and support local farms.</p></div><div><span class="trust-icon">♧</span><strong>Fair for everyone</strong><p>Transparent prices that respect the work behind every crop.</p></div><div><span class="trust-icon">↗</span><strong>Small, simple orders</strong><p>Order just what you need with a clear per-order limit.</p></div></div></section>
+{% endblock %}

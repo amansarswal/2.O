@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Create your account' if mode == 'register' else 'Sign in' }} · FarmConnect{% endblock %}
+{% block content %}
+<section class="auth-page"><div class="auth-card"><p class="eyebrow">{{ 'Join the community' if mode == 'register' else 'Welcome back' }}</p><h1>{{ 'Create your FarmConnect account' if mode == 'register' else 'Sign in to FarmConnect' }}</h1><div class="role-toggle"><button class="{{ 'active' if role == 'consumer' else '' }}" data-role="consumer">I’m buying</button><button class="{{ 'active' if role == 'farmer' else '' }}" data-role="farmer">I’m selling</button></div><form id="auth-form">
+  {% if mode == 'register' %}<label>Name<input name="name" required placeholder="Your full name"></label>{% else %}<label>Name<input name="name" required placeholder="Your account name"></label>{% endif %}
+  {% if mode == 'register' %}<div id="farmer-fields"><label>Farm name<input name="farm" placeholder="e.g. Sunrise Farm"></label><label>Location<input name="location" placeholder="Your town or district"></label></div>{% endif %}
+  <label>Password<input name="password" type="password" minlength="6" required placeholder="At least 6 characters"></label><button class="button button-wide" type="submit">{{ 'Create account' if mode == 'register' else 'Sign in' }}</button><div id="auth-message" class="form-message"></div>
+</form><p class="auth-switch">{{ 'Already have an account?' if mode == 'register' else 'New to FarmConnect?' }} <a href="{{ url_for('login' if mode == 'register' else 'register', role=role) }}">{{ 'Sign in' if mode == 'register' else 'Create an account' }}</a></p></div></section>
+{% endblock %}
+{% block scripts %}<script>
+let selectedRole={{ role|tojson }}; const farmerFields=document.querySelector('#farmer-fields'); function syncRole(){if(farmerFields)farmerFields.hidden=selectedRole!=='farmer';} syncRole(); document.querySelectorAll('[data-role]').forEach(button=>button.addEventListener('click',()=>{selectedRole=button.dataset.role;document.querySelectorAll('[data-role]').forEach(item=>item.classList.toggle('active',item===button));syncRole();}));
+document.querySelector('#auth-form').addEventListener('submit',async e=>{e.preventDefault();const body=Object.fromEntries(new FormData(e.target));body.role=selectedRole;const endpoint={{ ('"/api/register"' if mode == 'register' else '"/api/login"')|safe }};const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await response.json();const message=document.querySelector('#auth-message');if(!response.ok){message.className='form-message error';message.textContent=data.error;return;}location.href=data.redirect;});
+</script>{% endblock %}

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}FarmConnect{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">✦</span> FarmConnect</a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="{{ url_for('products_page') }}">Browse products</a>
+        <a href="{{ url_for('farmer_dashboard') }}">Farmer dashboard</a>
+        <a href="{{ url_for('consumer_orders') }}">My orders</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="button button-ghost" href="{{ url_for('login') }}">Sign in</a>
+        <a class="button button-small" href="{{ url_for('register') }}">Join free</a>
+      </div>
+    </div>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  <footer class="footer"><div class="shell"><strong>FarmConnect</strong><span>Fresh food, fair prices, closer to home.</span></div></footer>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
